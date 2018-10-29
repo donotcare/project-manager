@@ -1,10 +1,10 @@
 <template>
     <v-app id="inspire">
-        <v-toolbar color="deep-purple darken-4" dark>
+        <v-toolbar dark color="primary">
             <v-toolbar-items class="hidden-sm-and-down">
                 <v-btn flat>Задачи</v-btn>
                 <v-btn flat>
-                    <v-badge right>
+                    <v-badge right color="secondary">
                         <span slot="badge">2</span>
                         Лента сообщений
                     </v-badge>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-    import TaskTable from 'components/TaskTable.vue'
+    import TaskTable from 'components/task/TaskTable.vue'
 
     export default {
         components: {
