@@ -3,8 +3,9 @@
         <v-flex xs12 sm6 md2>
             <user-combo label="Исполнитель" v-model="interface"></user-combo>
         </v-flex>
-        <v-btn slot="activator" color="primary" dark class="mb-2" @click.native="createItem">Добавить
-            задачу
+        <v-btn slot="activator" color="secondary" dark @click.native="createItem">
+            Создать задачу
+            <v-icon right dark>create</v-icon>
         </v-btn>
     </v-card-title>
 </template>

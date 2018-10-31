@@ -6,8 +6,8 @@ import 'vuetify/dist/vuetify.min.css'
 
 Vue.use(Vuetify, {
     theme: {
-        primary: "#5C6BC0",
-        secondary: "#e57373",
+        primary: "#5B3C67",
+        secondary: "#febf6f",
         accent: "#9c27b0",
         error: "#f44336",
         warning: "#ffeb3b",
@@ -16,7 +16,6 @@ Vue.use(Vuetify, {
     }
 });
 Vue.use(VueResource);
-
 new Vue({
         el: '#app',
         render: a => a(App)

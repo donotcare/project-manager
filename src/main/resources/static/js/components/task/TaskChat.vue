@@ -5,11 +5,15 @@
             <v-btn color="primary" @click="create()">Отправить</v-btn>
         </v-layout>
         <v-list>
-            <v-list-tile v-for="item in messages" :key="item.text">
-                <v-list-tile-content>
-                    <v-list-tile-title v-text="item.text"></v-list-tile-title>
-                </v-list-tile-content>
-            </v-list-tile>
+            <template v-for="message in orderedUsers">
+                <v-list-tile>
+                    <v-list-tile-content>
+                        <v-list-tile-title>{{message.created}} {{message.author.name}}</v-list-tile-title>
+                        <v-list-tile-sub-title>{{message.text}}</v-list-tile-sub-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-divider></v-divider>
+            </template>
         </v-list>
     </div>
 </template>
@@ -19,7 +23,7 @@
         data() {
             return {
                 messages: [],
-                text:""
+                text: ""
             }
         },
         props: ['taskId'],
@@ -28,7 +32,15 @@
                 var path = "task/" + this.taskId + "/message";
                 console.log(this.text);
                 this.$resource(path).save({}, this.text).then(result => this.$resource(path).get().then(result =>
-                    result.json().then(data => {this.messages = data; this.text =""})));
+                    result.json().then(data => {
+                        this.messages = data;
+                        this.text = ""
+                    })));
+            }
+        },
+        computed: {
+            orderedUsers: function () {
+                return this.messages.sort((a, b) => b.id - a.id);
             }
         }
     }
