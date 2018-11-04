@@ -17,7 +17,6 @@
                 open: false
             }
         },
-
         computed: {
             date: {
                 get() {
@@ -26,7 +25,8 @@
                 },
                 set(val) {
                     this.datetime = val + " " + this.value.split(" ")[1]
-                }
+                },
+
             },
             time: {
                 get() {

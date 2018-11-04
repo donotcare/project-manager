@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
-import App from 'pages/App.vue'
+import App from 'App.vue'
+import TaskView from 'pages/TaskView.vue'
+import TaskEditDialog from 'components/task/TaskEditDialog.vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
+import VueRouter from "vue-router";
 
 Vue.use(Vuetify, {
     theme: {
@@ -15,9 +18,30 @@ Vue.use(Vuetify, {
         success: "#4caf50"
     }
 });
+
 Vue.use(VueResource);
+
+Vue.use(VueRouter);
+const router = new VueRouter({
+    routes: [
+        {
+            path: '/',
+            name: 'home',
+            component: TaskView
+        },
+        {
+            path: '/task/:id?',
+            name: 'task',
+            component: TaskEditDialog
+        }
+    ]
+});
+
 new Vue({
         el: '#app',
-        render: a => a(App)
+        router: router,
+        render: c => c(App)
     }
 );
+
+
