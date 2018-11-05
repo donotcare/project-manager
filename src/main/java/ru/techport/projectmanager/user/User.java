@@ -1,5 +1,6 @@
 package ru.techport.projectmanager.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,9 @@ public class User {
     @Column(unique = true)
     private String username;
     private String name;
+    @JsonIgnore
     private String password;
+    @JsonIgnore
     private boolean enabled;
 
     public static User of(String name, String username, String password) {

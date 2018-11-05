@@ -25,7 +25,7 @@ Vue.use(VueRouter);
 const router = new VueRouter({
     routes: [
         {
-            path: '/',
+            path: '/task',
             name: 'home',
             component: TaskView
         },

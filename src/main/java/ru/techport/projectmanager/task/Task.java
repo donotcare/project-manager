@@ -23,16 +23,17 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
     @OneToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, updatable = false)
     private User author;
     @OneToOne
     @JoinColumn(nullable = false)
     private User receiver;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @Column(updatable = false)
     private LocalDateTime created;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime taskDate;
 
     public static Task of(String name, TaskStatus status, User author, User receiver, LocalDateTime taskDate) {

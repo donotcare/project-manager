@@ -83,7 +83,7 @@
                 if (taskId === undefined) {
                     this.item = this.getDefaultItem();
                 } else {
-                    this.$resource('/task/' + taskId).get().then(result =>
+                    this.$resource('/api/task/' + taskId).get().then(result =>
                         result.json().then(data => this.item = data));
                 }
             },
@@ -98,7 +98,7 @@
                 }
             },
             save() {
-                this.$resource('/task/' + this.item.id).update({}, this.item);
+                this.$resource('/api/task/' + this.item.id).update({}, this.item);
             },
             close() {
                 this.$router.push({name: 'home'})

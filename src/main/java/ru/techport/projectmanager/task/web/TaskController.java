@@ -12,7 +12,7 @@ import java.util.Collection;
 public class TaskController {
     private final TaskService taskService;
 
-    @GetMapping("task")
+    @GetMapping("/api/task")
     public Collection<Task> getTasks(@RequestParam(name = "receiver", required = false) Integer receiverId) {
         if(receiverId != null) {
             return taskService.getTasksByReceiver(receiverId);
@@ -21,14 +21,13 @@ public class TaskController {
         }
     }
 
-
-    @GetMapping("task/{id}")
+    @GetMapping("/api/task/{id}")
     public Task getTask(@PathVariable("id") long id) {
         return taskService.getTaskById(id);
 
     }
 
-    @PutMapping("task/{id}")
+    @PutMapping("/api/task/{id}")
     public void saveTask(@PathVariable("id") long id, @RequestBody Task task) {
         taskService.save(task);
     }

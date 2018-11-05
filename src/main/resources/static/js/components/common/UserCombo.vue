@@ -9,7 +9,7 @@
             }
         },
         mounted() {
-            return this.$resource('/user').get().then(result =>
+            return this.$resource('/api/user').get().then(result =>
                 result.json().then(data => data.forEach(user => this.users.push(user))
                 )
             )

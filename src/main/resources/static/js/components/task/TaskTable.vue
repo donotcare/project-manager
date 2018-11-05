@@ -32,7 +32,7 @@
             }
         },
         created() {
-            return this.$resource('/task').get().then(result =>
+            return this.$resource('/api/task').get().then(result =>
                 result.json().then(data => data.forEach(task => this.tasks.push(task))
                 )
             )
@@ -50,7 +50,7 @@
             },
             filterUpdated(event) {
                 this.tasks = [];
-                let path = "/task";
+                let path = "/api/task";
                 if(event.id != null)
                     path += '?receiver=' + event.id;
                 this.$resource(path).get().then(result =>

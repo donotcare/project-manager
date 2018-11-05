@@ -15,14 +15,17 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/user")
+    @GetMapping("/api/user")
     public List<User> getUsers() {
         return userService.getAll();
     }
 
-    @GetMapping("/username")
+    @GetMapping("/api/username")
     public String getCurrentUserName(@AuthenticationPrincipal UserDetails user) {
-        return user.getUsername();
+        if(user == null) {
+            return "Неизвестно";
+        } else {
+            return user.getUsername();
+        }
     }
-
 }

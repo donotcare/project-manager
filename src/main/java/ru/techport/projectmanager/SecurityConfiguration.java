@@ -24,10 +24,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/h2/**", "/js/**", "/error**").permitAll()
-                .anyRequest().hasRole("USER")
-                .and()
-                .formLogin().permitAll()
+                .antMatchers( "/", "/h2/**", "/js/**", "/error**").permitAll()
+                .antMatchers("/api/username").permitAll()
+                .antMatchers("/api/**").hasRole("USER")
+                .and().formLogin()
+                .loginPage("/").defaultSuccessUrl("/#/task").permitAll()
                 .and()
                 .logout().permitAll();
     }
