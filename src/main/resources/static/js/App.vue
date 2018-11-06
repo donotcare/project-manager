@@ -16,7 +16,7 @@
                 <v-btn flat right href="/logout">Выйти</v-btn>
             </v-toolbar-items>
         </v-toolbar>
-        <v-container grid-list-md  v-if="login === 'Неизвестно'">
+        <v-container grid-list-md v-if="loggedOut">
             <form action="/" method="post">
                 <v-text-field label="Логин" v-model="username"></v-text-field>
                 <input name="username" id="username" v-model="username" type="hidden">
@@ -26,7 +26,7 @@
                 <v-btn color="primary" type="submit" value="Login">Войти</v-btn>
             </form>
         </v-container>
-        <router-view></router-view>
+        <router-view v-else="loggedOut"></router-view>
     </v-app>
 </template>
 
@@ -39,7 +39,7 @@
         },
         data() {
             return {
-                login:"",
+                login: "",
                 username: "",
                 password: ""
             }
@@ -53,9 +53,13 @@
         methods: {
             getUsername() {
                 this.$resource("/api/username").get().then(result => this.login = result.bodyText);
-            },
-            logout() {
-                this.$resource("/logout").get();
+            }
+        },
+        computed: {
+            loggedOut: {
+                get() {
+                    return this.login === 'Неизвестно'
+                }
             }
         }
     }
