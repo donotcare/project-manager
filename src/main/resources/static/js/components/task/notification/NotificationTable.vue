@@ -3,7 +3,7 @@
         <template slot="items" slot-scope="props">
             <tr>
                 <td>{{ props.item.startDate }}</td>
-                <td>{{ props.item.repeat }}</td>
+                <td>{{ props.item.repeat.name }}</td>
                 <td>
                     <v-icon small @click="deleteItem(props.item)">
                         delete

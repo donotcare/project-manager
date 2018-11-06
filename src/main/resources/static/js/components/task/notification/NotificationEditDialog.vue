@@ -11,7 +11,7 @@
                             <date-time-picker label="Начальная дата" v-model="startDate"></date-time-picker>
                         </v-flex>
                         <v-flex xs12 sm6 md5>
-                            <v-combobox label="Повторять" :items="repeatStatuses" v-model="repeat"></v-combobox>
+                           <notification-repeat-combo v-model="repeat"></notification-repeat-combo>
                         </v-flex>
                         <v-flex xs12 sm6 md2>
                             <v-btn color="primary" class="text-xs-center" @click="addNotification">Добавить</v-btn>
@@ -25,24 +25,17 @@
 </template>
 <script>
     import DateTimePicker from "components/common/DateTimePicker.vue";
+    import NotificationRepeatCombo from "components/common/NotificationRepeatCombo.vue";
     import NotificationTable from "components/task/notification/NotificationTable.vue"
 
     export default {
-        components: {DateTimePicker, NotificationTable},
-        props: ['value'],
+        components: {DateTimePicker, NotificationTable, NotificationRepeatCombo},
+        props: ['value', 'taskId', 'notifications'],
         data() {
             return {
-                repeat: 'Нет',
+                repeat: {id: 'NONE', name: 'Нет'},
                 startDate: new Date().toISOString().slice(0, 10) + " 12:00",
-                notifications: [],
-                repeatStatuses: [
-                    'Нет',
-                    'Раз в час',
-                    'Раз в день',
-                ]
             };
-        }, created() {
-            console.log('create');
         },
         computed: {
             dialog: {
@@ -54,9 +47,17 @@
                 }
             }
         },
+        watch: {"dialog":"getNotifications"},
         methods: {
             addNotification() {
-                this.notifications.push({startDate: this.startDate, repeat: this.repeat});
+                this.notifications.push({taskId: this.taskId, startDate: this.startDate, repeat: this.repeat});
+            },
+            getNotifications() {
+                if(this.dialog && this.taskId != null) {
+                    this.$resource('/api/task/' + this.taskId + '/notification').get().then(result =>
+                        result.json().then(data => data.forEach(notification => this.notifications.push(notification))
+                        ));
+                }
             }
         }
     }

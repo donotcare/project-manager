@@ -11,7 +11,10 @@
                 </v-btn>
             </v-toolbar-items>
             <v-spacer></v-spacer>
-            <v-toolbar-items>
+            <v-toolbar-items v-if="loggedOut">
+                <v-btn flat right href="/">Выполните вход</v-btn>
+            </v-toolbar-items>
+            <v-toolbar-items v-else="loggedOut">
                 <v-btn flat right>{{login}}</v-btn>
                 <v-btn flat right href="/logout">Выйти</v-btn>
             </v-toolbar-items>

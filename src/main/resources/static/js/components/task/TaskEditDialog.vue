@@ -23,13 +23,12 @@
                                     <user-combo label="Автор" disabled v-model="item.author"></user-combo>
                                 </v-flex>
                                 <v-flex xs12 sm6 md4>
-                                    <user-combo label="Статус" value="Активная" disabled></user-combo>
+                                    <status-combo label="Статус" disabled v-model="item.status"></status-combo>
                                 </v-flex>
                             </v-layout>
                             <v-layout row>
                                 <v-flex xs12 sm6 md6>
-                                    <date-time-picker label="Дата исполнения"
-                                                      v-model="item.taskDate"></date-time-picker>
+                                    <date-time-picker label="Дата исполнения" v-model="item.taskDate"></date-time-picker>
                                 </v-flex>
                                 <v-flex xs12 sm6 md6 d-inline-flex>
                                     <v-text-field label="Следующее напоминание" disabled></v-text-field>
@@ -48,7 +47,7 @@
                 </v-container>
             </v-card>
         </v-card>
-        <notification-edit-dialog v-model="dialog"></notification-edit-dialog>
+        <notification-edit-dialog v-model="dialog" :taskId="item.id" :notifications="notifications"></notification-edit-dialog>
     </v-dialog>
 </template>
 
@@ -56,18 +55,20 @@
 
     import DateTimePicker from 'components/common/DateTimePicker.vue'
     import UserCombo from 'components/common/UserCombo.vue'
+    import StatusCombo from 'components/common/StatusCombo.vue'
     import Uploader from 'components/common/Uploader.vue'
     import TaskChat from 'components/task/TaskChat.vue'
     import NotificationEditDialog from 'components/task/notification/NotificationEditDialog.vue'
 
     export default {
         components: {
-            DateTimePicker, UserCombo, TaskChat, Uploader, NotificationEditDialog
+            DateTimePicker, UserCombo, TaskChat, Uploader, NotificationEditDialog, StatusCombo
         },
         data() {
             return {
                 dialog: false,
-                item: {}
+                item: {},
+                notifications: []
             }
         },
         created() {
@@ -89,7 +90,7 @@
             },
             getDefaultItem() {
                 return {
-                    id: 0,
+                    id: null,
                     name: '',
                     status: 'Новый',
                     creationDate: '2018-11-03 20:38',
@@ -98,7 +99,8 @@
                 }
             },
             save() {
-                this.$resource('/api/task/' + this.item.id).update({}, this.item);
+                this.$resource('/api/task/' + this.item.id).update({}, {task: this.item, notifications: this.notifications});
+                this.$router.push({name: 'home'})
             },
             close() {
                 this.$router.push({name: 'home'})

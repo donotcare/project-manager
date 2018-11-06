@@ -28,7 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/username").permitAll()
                 .antMatchers("/api/**").hasRole("USER")
                 .and().formLogin()
-                .loginPage("/").defaultSuccessUrl("/#/task").permitAll()
+                .loginPage("/").defaultSuccessUrl("/#/tasks").permitAll()
                 .and()
                 .logout().permitAll();
     }

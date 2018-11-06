@@ -6,7 +6,7 @@
                 <tr @dblclick="editItem(props.item)">
                     <td>{{ props.item.id }}</td>
                     <td class="text-xs-left">{{ props.item.name }}</td>
-                    <td class="text-xs-left">{{ props.item.status.name }}</td>
+                    <td class="text-xs-left">{{ props.item.status.name}}</td>
                     <td class="text-xs-left">{{props.item.created}}</td>
                     <td class="text-xs-left">{{props.item.taskDate}}</td>
                     <td class="text-xs-left">{{props.item.receiver.name}}</td>
@@ -38,20 +38,20 @@
             )
         },
         components: {
-           TaskFilter
+            TaskFilter
         },
         methods: {
             editItem(item) {
                 const id = item.id;
-                this.$router.push({ name: 'task', params: {id}})
+                this.$router.push({name: 'task', params: {id}})
             },
             createItem() {
-                this.$router.push({ name: 'task'})
+                this.$router.push({name: 'task'})
             },
             filterUpdated(event) {
                 this.tasks = [];
                 let path = "/api/task";
-                if(event.id != null)
+                if (event.id != null)
                     path += '?receiver=' + event.id;
                 this.$resource(path).get().then(result =>
                     result.json().then(data => data.forEach(task => this.tasks.push(task))));
