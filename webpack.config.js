@@ -1,12 +1,19 @@
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const VuetifyLoader = require('vuetify-loader/lib/plugin');
 
 module.exports = {
     mode: 'development',
     devtool: 'source-map',
     entry: path.join(__dirname, 'src', 'main', 'resources', 'static', 'js', 'main.js'),
+    output: {
+        path: path.join(__dirname, '/src/main/resources/static/built/'),
+        filename: '[name].js',
+        chunkFilename: 'chunk-[name].js',
+        publicPath: 'http://localhost:8000/built/',
+
+    },
     devServer: {
-        contentBase: './dist',
         compress: true,
         port: 8000,
         allowedHosts: [
@@ -21,7 +28,8 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env']
+                        presets: ['@babel/preset-env'],
+                        plugins: ['@babel/plugin-syntax-dynamic-import']
                     }
                 }
             },
@@ -30,21 +38,17 @@ module.exports = {
                 loader: 'vue-loader'
             },
             {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader']},
+                test: /\.styl$/,
+                loader: ['css-loader', 'stylus-loader']
+            },
             {
-                test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
-                use: [{
-                    loader: 'url-loader',
-                    options: {
-                        limit: 10000
-                    }
-                }]
-            }
+                test: /\.css$/,
+                use: ['vue-style-loader', 'css-loader']
+            },
         ]
     },
     plugins: [
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(), new VuetifyLoader()
     ],
     resolve: {
         modules: [

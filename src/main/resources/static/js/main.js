@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 import App from 'App.vue'
-import TaskView from 'pages/TaskView.vue'
-import TaskEditDialog from 'components/task/TaskEditDialog.vue'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
 import VueRouter from "vue-router";
+import Vuetify from 'vuetify/lib'
+import 'vuetify/src/stylus/app.styl'
+import 'vuetify/dist/vuetify.min.css'
+
+const TaskView = () => import('pages/TaskView.vue');
+const TaskEditDialog = () => import('components/task/TaskEditDialog.vue');
 
 Vue.use(Vuetify, {
     theme: {
