@@ -11,7 +11,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import ru.techport.projectmanager.security.CustomAuthenticationSuccessHandler;
+import ru.techport.projectmanager.security.CustomLogoutSuccessHandler;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 @Configuration
@@ -22,15 +32,36 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers( "/", "/h2/**", "/js/**", "/error**").permitAll()
+                .antMatchers("/", "/h2/**", "/js/**", "/error**").permitAll()
                 .antMatchers("/api/username").permitAll()
                 .antMatchers("/api/**").hasRole("USER")
                 .and().formLogin()
-                .loginPage("/").defaultSuccessUrl("/#/tasks").permitAll()
+                .loginPage("/api/login").successHandler(successHandler()).permitAll()
                 .and()
-                .logout().permitAll();
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout", "POST"))
+                .logoutSuccessHandler(logoutSuccessHandler())
+                .permitAll()
+                .and().exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint())
+                .and()
+                .logout().permitAll().and().rememberMe().key("dOOwoi9f333iIFiq[21-BUEBfe");
+    }
+
+    @Bean
+    public AuthenticationEntryPoint unauthorizedEntryPoint() {
+        return (request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new CustomAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        return new CustomLogoutSuccessHandler();
     }
 
     @Bean
@@ -53,5 +84,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedHeader("*");
+        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("PATCH");
+        config.addAllowedMethod("DELETE");
+        config.addAllowedMethod("HEAD");
+        config.addAllowedMethod("OPTIONS");
+
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 }
